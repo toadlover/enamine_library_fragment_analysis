@@ -7,4 +7,4 @@ for i in range(0,531):
 	os.system("sleep 1")
 	command = "bsub -q short -W 8:00 -u \"\" -R \"rusage[mem=10000]\" \"python get_fragments_from_superchunks.py " + str(i) + "\""
 	print(command)
-	#os.system(command)
+	os.system(command)
