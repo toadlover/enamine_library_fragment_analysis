@@ -8,7 +8,8 @@ ROT_BOND_SMARTS = Chem.MolFromSmarts(
 
 ESTER_SMARTS = Chem.MolFromSmarts("C(=O)O[#6]")
 NITRILE_SMARTS = Chem.MolFromSmarts("C#N")
-HEAVY_HALOGEN_SMARTS = Chem.MolFromSmarts("[Cl,Br,I]")
+#allow F and Cl
+HEAVY_HALOGEN_SMARTS = Chem.MolFromSmarts("[Br,I]")
 
 MAX_EXAMPLES = 3
 MIN_HEAVY_ATOMS = 3
