@@ -19,7 +19,9 @@ NITRILE_SMARTS = Chem.MolFromSmarts("C#N")
 HEAVY_HALOGEN_SMARTS = Chem.MolFromSmarts("[Br,I]")
 
 MAX_EXAMPLES = 3
-MIN_HEAVY_ATOMS = 3
+#ensure fragment is not too big or too small
+MIN_HEAVY_ATOMS = 5
+MAX_HEAVY_ATOMS = 15
 
 fragment_dict = {}
 
@@ -107,12 +109,21 @@ for i in range(0,100):
 		        if frag.GetNumHeavyAtoms() < MIN_HEAVY_ATOMS:
 		            continue
 
+		        if frag.GetNumHeavyAtoms() > MAX_HEAVY_ATOMS:
+		            continue
+
 		        # Chemical exclusion filters
 		        if frag.HasSubstructMatch(ESTER_SMARTS):
 		            continue
 		        if frag.HasSubstructMatch(NITRILE_SMARTS):
 		            continue
 		        if frag.HasSubstructMatch(HEAVY_HALOGEN_SMARTS):
+		            continue
+
+		        #remove overly complex fragments with many rings or too many heteroatoms
+		        num_rings = frag.GetRingInfo().NumRings()
+		        num_hetero = sum(1 for a in frag.GetAtoms() if a.GetAtomicNum() not in (1, 6))  # H + C only
+		        if num_rings > 4 or num_hetero > 8:
 		            continue
 
 		        frag_smiles = Chem.MolToSmiles(
@@ -138,6 +149,15 @@ for i in range(0,100):
 		os.system("rm split_new_named_" + str(j) + ".sdf.tar.gz")
 		os.system("rm split_new_named_" + str(j) + ".sdf")
 
+
+#loop over the dictionary once to remove odd fragments that are large and singleton fragments (1 occurenct and at least 10 heavy atoms)
+for frag_smiles in list(fragment_dict.keys()):  # list() to allow deletion
+	frag_info = fragment_dict[frag_smiles]
+
+	if frag_info["count"] == 1:
+		mol = Chem.MolFromSmiles(frag_smiles)
+		if mol and mol.GetNumHeavyAtoms() >= 11:
+			del fragment_dict[frag_smiles]
 
 #output the fragment dictionary to a csv file
 write_file = open(str(superchunk) + "_fragments.csv", "w")
