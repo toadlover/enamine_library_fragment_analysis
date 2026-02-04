@@ -21,6 +21,14 @@ for mol_idx, mol in enumerate(supplier):
     if mol is None:
         continue
 
+    #derive the ligand name as an example
+	ligand_name = (
+	    mol.GetProp("_Name")
+	    if mol.HasProp("_Name")
+	    else f"mol_{mol_idx}"
+	)
+
+
     # Keep largest component (salt stripping)
     frags = Chem.GetMolFrags(mol, asMols=True)
     mol = max(frags, key=lambda m: m.GetNumHeavyAtoms())
@@ -68,12 +76,12 @@ for mol_idx, mol in enumerate(supplier):
         if frag_smiles not in fragment_dict:
             fragment_dict[frag_smiles] = {
                 "count": 1,
-                "examples": [mol_idx]
+                "examples": [ligand_name]
             }
         else:
             fragment_dict[frag_smiles]["count"] += 1
             if len(fragment_dict[frag_smiles]["examples"]) < MAX_EXAMPLES:
-                fragment_dict[frag_smiles]["examples"].append(mol_idx)
+                fragment_dict[frag_smiles]["examples"].append(ligand_name)
 
 
 #output the fragment dictionary to a csv file
