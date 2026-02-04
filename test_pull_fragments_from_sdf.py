@@ -22,11 +22,11 @@ for mol_idx, mol in enumerate(supplier):
         continue
 
     #derive the ligand name as an example
-	ligand_name = (
-	    mol.GetProp("_Name")
-	    if mol.HasProp("_Name")
-	    else f"mol_{mol_idx}"
-	)
+    ligand_name = (
+        mol.GetProp("_Name")
+        if mol.HasProp("_Name")
+        else f"mol_{mol_idx}"
+    )
 
 
     # Keep largest component (salt stripping)
