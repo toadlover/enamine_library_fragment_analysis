@@ -35,10 +35,15 @@ os.chdir(str(superchunk))
 #iterate chunks (0-99)
 for i in range(0,100):
 
+	#chunk base so add a preceeding 0 to the chunk if it is 0-9
+	chunk_base = str(i)
+
+	while len(chunk_base) < 2:
+		chunk_base = "0" + chunk_base
+
 	#derive chunk name, which is the superchunk followed by the chunk, with zeroes appended to the front to make a 5 digit string
 	#i.e. superchunk 1 chunk 43 would be '00' '1' ''43' where 1 + 43 are concatenated, and then preceeding zeroes are appended
-	chunk_id = str(superchunk) + str(i)
-
+	chunk_id = str(superchunk) + chunk_base
 	while len(chunk_id) < 5:
 		chunk_id = "0" + chunk_id
 
