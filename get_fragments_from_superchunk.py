@@ -40,6 +40,10 @@ for i in range(0,100):
 	while len(chunk_id) < 5:
 		chunk_id = "0" + chunk_id
 
+	#adding a temporary test throttle so  Ican quickly check a a few chunks quickly
+	if chunk_id == "00008":
+		break
+
 	#break for at end of library
 	if chunk_id == "53085":
 		print("At library end and expected to look at chunk " + chunk_id)
