@@ -60,7 +60,7 @@ for i in range(0,100):
 		os.system("tar -xzf split_new_named_" + str(j) + ".sdf.tar.gz")
 
 
-		supplier = Chem.SDMolSupplier("split_new_named_" + str(j) + ".sdf.tar.gz", removeHs=True)
+		supplier = Chem.SDMolSupplier("split_new_named_" + str(j) + ".sdf", removeHs=True)
 
 		for mol_idx, mol in enumerate(supplier):
 		    if mol is None:
