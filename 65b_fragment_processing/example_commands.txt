@@ -1,0 +1,12 @@
+#make the fragment features from the entire S section of the 64B library, outputted to /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/test
+#output in batches of 3,000,000 ligands at a time
+#this is wrapped in a LSF job since it may take time
+bsub -q long -W 24:00 "python enamine_recipe_feature_pipeline_with_query.py submit /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/ --output-root /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/test --pattern "*.bz2" --batch-size 3000000 --queue long --walltime 24:00 --memory-mb 8000   --submit"
+
+#make generated library as human readable for human processing (not necessarily needed for the model training
+#example pull of batch 46 (000046)
+#needs the manifest made used to make the feature library
+python enamine_recipe_feature_pipeline_with_query.py worker --manifest /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/test/manifest.tsv --task-id 46 --output-root /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/extract_test --write-readable-features --write-readable-lsh --write-feature-token-map --write-recipes --map-include-ligand-name --map-include-smiles
+
+#pull top fragments composing an input smiles from a library batch
+python enamine_recipe_feature_pipeline_with_query.py query --smiles 'CN1N=NN=C1C=CCCN' --batch-dir /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/test/batch_000046 --output-prefix /pi/summer.thyme-umw/enamine-REAL-64billion-smiles/S/S_library_fragments_process/fetch --top-n 100
