@@ -1,0 +1,12 @@
+The rdkit conda environment named "rdkit-env" can be built from the provided yaml file, "rdkit-env.yml".
+This environment contains built supporting packages for ligand file processing, including RDKit for SMILES extraction and openbabel for file type conversion.
+
+First, you need to get conda operating on your profile.
+If I recall correctly, conda is natively included on the server, so you won't have to run anything like "module load conda".
+
+To initialize conda, run "source init"
+You may then have to run "conda init"
+Then run "conda activate"
+If you are not in the base environment at this point, let me know.
+At this point, you should be good to install the rdkit environment from the yml as follows:
+conda env create -f rdkit-env.yml
