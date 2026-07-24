@@ -1,0 +1,16 @@
+#!/bin/bash
+#BSUB -J "library_chunks[1-10000]%20"
+#BSUB -q long
+#BSUB -n 1
+#BSUB -R "rusage[mem=4000]"
+#BSUB -M 4000
+#BSUB -W 12:00
+#BSUB -o logs/library_%J_%I.out
+#BSUB -e logs/library_%J_%I.err
+
+: "${OFFSET:?OFFSET must be defined}"
+
+CHUNK_NUMBER=$((OFFSET + LSB_JOBINDEX - 1))
+CHUNK_ID=$(printf "%05d" "$CHUNK_NUMBER")
+
+python filter_and_send_chunk_to_aicr.py "$CHUNK_ID"
