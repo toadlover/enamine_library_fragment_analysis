@@ -40,7 +40,7 @@ unfiltered_library_location = "/pi/summer.thyme-umw/enamine-REAL-2.6billion/" + 
 
 #copy the contents to the working location
 os.system("cp -drf " + filtered_library_file + " " + working_location)
-os.system("cp -drf " + unfiltered_library_location + " /condensed_params_and_db_*.tar.gz" + " " + working_location)
+os.system("cp -drf " + unfiltered_library_location + "/condensed_params_and_db_*.tar.gz" + " " + working_location)
 
 #unzip everything
 for r,d,f in os.walk(os.getcwd()):
