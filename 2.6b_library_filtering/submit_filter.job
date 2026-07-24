@@ -1,10 +1,10 @@
 #!/bin/bash
-#BSUB -J "library_chunks[1-5000]%20"
+#BSUB -J "library_chunks[1-10000]%20"
 #BSUB -q short
 #BSUB -n 1
 #BSUB -R "rusage[mem=4000]"
 #BSUB -M 4000
-#BSUB -W 12:00
+#BSUB -W 8:00
 #BSUB -o logs/library_%J_%I.out
 #BSUB -e logs/library_%J_%I.err
 
