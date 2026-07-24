@@ -1,0 +1,7 @@
+  bsub -J "library_00[1-100]%20" -env "all,OFFSET=0" < submit_filter.job 
+  bsub -J "library_00[101-10000]%20" -env "all,OFFSET=0" < submit_filter.job 
+  bsub -J "library_01[1-10000]%20" -env "all,OFFSET=10000" < submit_filter.job 
+  bsub -J "library_02[1-10000]%20" -env "all,OFFSET=20000" < submit_filter.job 
+  bsub -J "library_03[1-10000]%20" -env "all,OFFSET=30000" < submit_filter.job 
+  bsub -J "library_04[1-10000]%20" -env "all,OFFSET=40000" < submit_filter.job 
+  bsub -J "library_05[1-3086]%20" -env "all,OFFSET=50000" < submit_filter.job 
