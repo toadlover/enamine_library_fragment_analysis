@@ -23,7 +23,7 @@ print("chunk:", working_chunk)
 working_location = "/pi/summer.thyme-umw/2.6b_library_filtering/filtering_space/" + working_superchunk + "/" + working_chunk
 
 #make the location
-os.system("mkdir " + working_location)
+os.system("mkdir -p " + working_location)
 
 #move here
 os.chdir(working_chunk)
