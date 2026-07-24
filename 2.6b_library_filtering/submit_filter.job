@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -J "library_chunks[1-10000]%20"
-#BSUB -q long
+#BSUB -q short
 #BSUB -n 1
 #BSUB -R "rusage[mem=4000]"
 #BSUB -M 4000
