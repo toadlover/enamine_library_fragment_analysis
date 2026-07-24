@@ -25,6 +25,8 @@ working_location = "/pi/summer.thyme-umw/2.6b_library_filtering/filtering_space/
 #make the location
 os.system("mkdir -p " + working_location)
 
+os.system("sleep 1")
+
 #move here
 os.chdir(working_chunk)
 
