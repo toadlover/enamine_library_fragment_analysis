@@ -101,7 +101,10 @@ for line in read_file.readlines():
 
 	mol = Chem.MolFromSmiles(smiles)
 	if mol is None:
-		raise ValueError(f"Invalid SMILES string: {smiles}")
+		#raise ValueError(f"Invalid SMILES string: {smiles}")
+		print(f"Invalid SMILES string: {smiles}")
+		os.system("rm shorthand_params/" + lig + "_shorthand_params.txt")
+		continue
 
 	# Add explicit hydrogens before generating a 3D conformer.
 	mol = Chem.AddHs(mol)
@@ -116,7 +119,10 @@ for line in read_file.readlines():
 		useRandomCoords=True,
 	)
 	if embed_status != 0:
-		raise RuntimeError(f"Could not generate a 3D conformer for {lig}")
+		#raise RuntimeError(f"Could not generate a 3D conformer for {lig}")
+		print(f"Could not generate a 3D conformer for {lig}")
+		os.system("rm shorthand_params/" + lig + "_shorthand_params.txt")
+		continue
 
 	# MMFF is preferred when parameters are available; otherwise use UFF.
 	if AllChem.MMFFHasAllMoleculeParams(mol):
@@ -145,4 +151,4 @@ print("sending to aicr")
 #"/work/umassmed/thymelab_umassmed/2.6b_conformer_library/" + working_superchunk + "/" + working_chunk
 os.system("ssh -i ~/.ssh/id_ed25519_aicr ari_ginsparg_umassmed@login.aicr.ai 'mkdir -p /work/umassmed/thymelab_umassmed/2.6b_conformer_library/" + working_superchunk + "/" + working_chunk + "/' && scp -i ~/.ssh/id_ed25519_aicr sdfs.tar.gz shorthand_params.tar.gz ari_ginsparg_umassmed@login.aicr.ai:/work/umassmed/thymelab_umassmed/2.6b_conformer_library/" + working_superchunk + "/" + working_chunk)
 #delete the files here for cleanliness
-#os.system("rm -drf *")
+os.system("rm -drf *")
