@@ -1,0 +1,57 @@
+#!/bin/bash
+# Submit array bounds and concurrency on the bsub command line, for example:
+#   bsub -J 'manifest_00[1-10000]%4' -env 'all,OFFSET=0' < submit_filter_manifest.job
+
+#BSUB -q short
+#BSUB -n 1
+#BSUB -R "rusage[mem=4000]"
+#BSUB -M 4000
+#BSUB -W 8:00
+#BSUB -o logs/manifest_%J_%I.out
+#BSUB -e logs/manifest_%J_%I.err
+
+set -Eeuo pipefail
+umask 027
+
+readonly SCRIPT_DIR="/pi/summer.thyme-umw/2.6b_library_filtering/enamine_library_fragment_analysis/2.6b_library_filtering"
+readonly PYTHON_SCRIPT="${SCRIPT_DIR}/filter_and_send_chunk_manifest.py"
+
+: "${OFFSET:?OFFSET must be defined through bsub -env 'all,OFFSET=...'}"
+: "${LSB_JOBINDEX:?This submission file must run as an LSF array job}"
+
+if ! [[ "${OFFSET}" =~ ^[0-9]+$ ]]; then
+    echo "ERROR: OFFSET must be a nonnegative integer; received '${OFFSET}'" >&2
+    exit 2
+fi
+
+CHUNK_NUMBER=$((OFFSET + LSB_JOBINDEX - 1))
+if (( CHUNK_NUMBER < 0 || CHUNK_NUMBER > 53085 )); then
+    echo "ERROR: Derived chunk ${CHUNK_NUMBER} is outside 0-53085" >&2
+    exit 2
+fi
+
+CHUNK_ID=$(printf "%05d" "${CHUNK_NUMBER}")
+
+mkdir -p "${SCRIPT_DIR}/logs"
+cd "${SCRIPT_DIR}"
+
+export PYTHONUNBUFFERED=1
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+
+start_epoch=$(date +%s)
+
+echo "Starting chunk ${CHUNK_ID} on $(hostname) at $(date --iso-8601=seconds)"
+echo "LSF job: ${LSB_JOBID:-unknown}[${LSB_JOBINDEX}] | OFFSET=${OFFSET}"
+
+set +e
+python "${PYTHON_SCRIPT}" "${CHUNK_ID}"
+status=$?
+set -e
+
+end_epoch=$(date +%s)
+echo "Finished chunk ${CHUNK_ID} with status ${status} after $((end_epoch - start_epoch)) seconds"
+
+exit "${status}"
