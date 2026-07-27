@@ -55,7 +55,7 @@ Filtering:
   --progress-every N       Default: 1000
 
 LSF resources are fixed at:
-  queue=long, runtime=1:00, cores=1, memory=4000 MB
+  queue=short, runtime=1:00, cores=1, memory=4000 MB
 EOF
 }
 
@@ -157,7 +157,7 @@ while (( BLOCK_START <= END_CHUNK )); do
 
     bsub \
         -J "${ARRAY_NAME}" \
-        -q long \
+        -q short \
         -W 1:00 \
         -n 1 \
         -M 4000 \
