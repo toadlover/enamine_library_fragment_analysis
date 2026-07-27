@@ -16,7 +16,7 @@ incomplete_writer.write("chunk,total_batches_expected,batches_complete\n")
 #iterate over the S and M folders
 for r,d,f in os.walk(location):
 	for dire in d:
-		if dire.startswith("H") and "M" in r or "S" in r:
+		if dire.startswith("H") and ("M" in r or "S" in r):
 			#we are at an individual directory, now look down the hcunk directory to determine its progress
 			print(r + "/" + dire)
 
