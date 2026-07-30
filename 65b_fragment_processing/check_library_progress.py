@@ -13,6 +13,10 @@ incomplete_writer = open(location + "incomplete_chunks.txt","w")
 #write a header for the incomplete
 incomplete_writer.write("chunk,total_batches_expected,batches_complete\n")
 
+#values to get progress on the whole library
+all_expected_batches = 0
+all_complete_batches = 0
+
 #iterate over the S and M folders
 for r,d,f in os.walk(location):
 	for dire in d:
@@ -54,4 +58,13 @@ for r,d,f in os.walk(location):
 
 			else:
 				incomplete_writer.write(r + "/" + dire + "," + str(total_batches) + "," + str(stats_counter) + "\n")
+
+			all_complete_batches = all_complete_batches + stats_counter
+			all_expected_batches = all_expected_batches + total_batches
+
+#return total status
+pct_complete = float(all_complete_batches) / float(all_expected_batches)
+print("Total progress: " + str(pct_complete) " complete.")
+print("Total batches expected by manifests: " + str(all_expected_batches))
+print("Total batches completed: " + str(all_complete_batches))
 
