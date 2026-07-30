@@ -64,7 +64,7 @@ for r,d,f in os.walk(location):
 
 #return total status
 pct_complete = float(all_complete_batches) / float(all_expected_batches)
-print("Total progress: " + str(pct_complete) " complete.")
+print("Total progress: " + str(pct_complete) + " complete.")
 print("Total batches expected by manifests: " + str(all_expected_batches))
 print("Total batches completed: " + str(all_complete_batches))
 
